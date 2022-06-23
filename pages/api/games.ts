@@ -51,12 +51,11 @@ export default async function handler(req, res) {
         return res.json(games);
     }
     catch (err) {
-        console.log(err);
         console.log(err.message);
 
         res.status(500).json
-            ({
-                message: 'Server Error'
-            });
+        ({
+            message: 'Server Error'
+        });
     }
 }

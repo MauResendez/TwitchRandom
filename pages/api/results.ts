@@ -1,10 +1,9 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
-dotenv.config({path: '/.env'}); // Load .env file
+dotenv.config({ path: '/.env' }); // Load .env file
 var shuffle = require('shuffle-array');
 
-async function getToken()
-{
+async function getToken() {
     const response = await axios.post(`${process.env.TOKEN_URL}?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=client_credentials`);
 
     const token = response.data;
@@ -12,8 +11,7 @@ async function getToken()
     return token.access_token;
 }
 
-function replace_thumbnail(streams)
-{
+function replace_thumbnail(streams) {
     let i = 0, len = streams.length;
 
     while(i < len)
@@ -95,7 +93,6 @@ export default async function handler(req, res) {
     }
     catch (err)
     {
-        console.log(err);
         console.log(err.message);
 
         res.status(500).json

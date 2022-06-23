@@ -1,9 +1,8 @@
 const axios = require('axios');
 const dotenv = require('dotenv');
-dotenv.config({path: '/.env'}); // Load .env file
+dotenv.config({ path: '/.env' }); // Load .env file
 
-async function getToken()
-{
+async function getToken() {
     const response = await axios.post(`${process.env.TOKEN_URL}?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=client_credentials`);
 
     const token = response.data;
