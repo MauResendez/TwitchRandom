@@ -22,6 +22,7 @@ function TwitchAppBar() {
         <Switch
           onClick={() => setTheme(theme == "light" ? "dark" : "light")}
           checked={theme == "dark" ? true : false}
+          inputProps={{ 'aria-label': 'theme' }}
         />
       </Toolbar>
     </AppBar>
