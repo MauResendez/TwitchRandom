@@ -11,7 +11,7 @@ async function getToken() {
 }
 
 export default async function handler(req, res) {
-    let { game, broadcaster_id } = req.query;
+    let { game_name, user_login } = req.query;
 
     try
     {
@@ -22,15 +22,12 @@ export default async function handler(req, res) {
             'Authorization': 'Bearer ' + token
         }
 
-        let response = await axios.get(`${process.env.STREAMS_URL}?broadcaster_id=${broadcaster_id}`, { headers: headers });
+        let response = await axios.get(`${process.env.STREAMS_URL}?user_login=${user_login}`, { headers: headers });
         let data = response.data;
 
-        if(data.data.length !== 0 && data.data[0].type === 'live' && data.data[0].game_name === game) // If the streamer is live and playing the game that the user is looking for, return true
-        {
+        if(data.data.length != 0 && data.data[0].type == 'live' && data.data[0].game_name == game_name) { // If the streamer is live and playing the game that the user is looking for, return true
             return res.json(true);
-        }
-        else // Else return false
-        {
+        } else { // Else return false
             return res.json(false);
         }
     }
@@ -39,8 +36,7 @@ export default async function handler(req, res) {
         console.log(err);
         console.log(err.message);
 
-        res.status(500).json
-        ({
+        res.status(500).json({
             message: 'Server Error'
         });
     }

@@ -53,8 +53,7 @@ export default async function handler(req, res) {
     catch (err) {
         console.log(err.message);
 
-        res.status(500).json
-        ({
+        res.status(500).json({
             message: 'Server Error'
         });
     }
