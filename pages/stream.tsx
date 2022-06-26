@@ -18,10 +18,6 @@ export default function Stream() {
 
     const router = useRouter();
 
-    function setFocus() {
-        document.getElementById("twitch-embed").focus();
-    }
-
     async function findStream(game: string, viewers: number, language: string) {
         let channel = sessionStorage.getItem('channel');
         let results = sessionStorage.getItem('results');
@@ -97,8 +93,8 @@ export default function Stream() {
                             muted={false}
                             channel={stream}
                             layout="video-with-chat"
-                            onPlay={() => { document.getElementById("twitch-embed").focus }}
-                            onReady={() => { document.getElementById("twitch-embed").focus }}
+                            onPlay={function noRefCheck(){}}
+                            onReady={function noRefCheck(){}}
                             theme="dark"
                             width="100%"
                             height={height}

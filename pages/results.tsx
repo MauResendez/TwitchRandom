@@ -15,9 +15,9 @@ export default function Results() {
 
     const displayResults = results.slice(channelsVisited, channelsVisited + channelsPerPage).map((result) => {
         return (
-            <Link href="/stream" passHref>
+            <Link href="/stream" passHref key={result.id}>
                 <a onClick={() => sessionStorage.setItem('channel', result.user_login)}>
-                    <ImageListItem key={result.id}>
+                    <ImageListItem>
                         <img src={result.thumbnail_url} alt='Thumbnail' />
                         <ImageListItemBar title={result.title} subtitle={<span>{result.user_name} ({result.viewer_count} viewers)</span>} />
                     </ImageListItem>
@@ -26,24 +26,24 @@ export default function Results() {
         );
     });
 
+    const findResults = async (game: string, viewers: number, language: string) => {
+        try {
+            const response = await axios.get(`/api/results?game=${game}&viewers=${viewers}&language=${language}`);
+
+            sessionStorage.setItem('results', JSON.stringify(response.data));
+            setState({ results: response.data, loading: false, ...error });
+            setCurrentPageResults(response.data.slice(channelsVisited, channelsVisited + channelsPerPage));
+        } catch (err) {
+            setState({ results: results, loading: false, error: err });
+        };
+    }
+
     useEffect(() => {
         sessionStorage.removeItem('channel');
 
         const game = sessionStorage.getItem('game');
         const viewers = sessionStorage.getItem('viewers');
         const language = sessionStorage.getItem('language');
-
-        const findResults = async (game: string, viewers: number, language: string) => {
-            try {
-                const response = await axios.get(`/api/results?game=${game}&viewers=${viewers}&language=${language}`);
-
-                sessionStorage.setItem('results', JSON.stringify(response.data));
-                setState({ results: response.data, loading: false, ...error });
-                setCurrentPageResults(response.data.slice(channelsVisited, channelsVisited + channelsPerPage));
-            } catch (err) {
-                setState({ results: results, loading: false, error: err });
-            };
-        }
           
         if(loading) {
             findResults(game, Number(viewers), language);
